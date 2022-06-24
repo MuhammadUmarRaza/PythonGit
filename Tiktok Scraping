@@ -1,0 +1,53 @@
+import selenium
+from selenium import webdriver
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
+import time 
+
+## Installing latest chrome version to work with this code
+driver = webdriver.Chrome(ChromeDriverManager().install())
+
+## Enter URL
+url = str(input("Enter URL : "))
+
+## Getting URL
+driver.get (url)
+
+## Getting No. of Likes 
+likes = driver.find_element_by_xpath('//*[@id="app"]/div[2]/div[2]/div[1]/div[1]/div/div[2]/div[2]/button[1]/strong').text
+print("Likes :",likes)
+
+## Getting No. of comments
+comments = driver.find_element_by_xpath('//*[@id="app"]/div[2]/div[2]/div[1]/div[1]/div/div[2]/div[2]/button[2]/strong').text
+print("Comments :",comments)
+
+## Getting No. of shares 
+shares = driver.find_element_by_xpath('//*[@id="app"]/div[2]/div[2]/div[1]/div[1]/div/div[2]/div[2]/button[3]/strong').text
+print("Shares :",shares)
+
+## Coding for views count
+driver.get('https://livecounts.io/tiktok-live-view-counter')
+
+## Entering search bar
+search_bar = driver.find_element_by_xpath("//*[@class='rounded-xl w-full dark:bg-gray-1000 pl-3 pr-10 py-2 border-2 dark:border-gray-700 border-gray-200 hover:border-gray-300 focus:outline-none focus:border-blue-500 transition-colors']")
+search_bar.clear()
+
+search_bar.send_keys(url)
+search_bar.send_keys(Keys.RETURN)
+time.sleep(5)
+search = driver.find_element_by_xpath("//*[@class='block w-7 h-7 text-center text-xl leading-0 absolute top-2 right-2 text-gray-400 focus:outline-none hover:text-gray-900 transition-colors']")
+search.click()
+time.sleep(5)
+select_video = driver.find_element_by_xpath("//*[@class='px-3 py-2 border dark:border-gray-700 border-gray-300']")
+select_video.click()
+    
+time.sleep(10)
+
+counts =driver.find_element_by_xpath('//*[@class="xxs:text-2xl xs:text-4xl text-5xl sm:text-6xl md:text-7xl lg:text-8xl dark:text-gray-300 text-center mt-5 mb-1"]').text.strip()
+" ".join(counts.split())
+
+counts = counts.replace("\n","")
+print("Views :",counts)
